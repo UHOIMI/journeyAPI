@@ -35,10 +35,10 @@ var result = {
     dbConfig
     .authenticate()
     .then(() => {
-      console.log('Connection has been established successfully.');
+      console.log('Connection has been established successfully for spot');
     })
     .catch((err) => {
-      console.error('Unable to connect to the database:', err);
+      console.error('plan Unable to connect to the database:', err);
     });
   }
 
