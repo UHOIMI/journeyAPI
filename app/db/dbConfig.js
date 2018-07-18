@@ -10,6 +10,7 @@ const dbConfig = new Sequelize('test', 'postgres', 'Minosannv1', {
     acquire: 30000,
     idle: 10000
   },
+  logging:false,
   define: {
     timestamps: false, 
     freezeTableName: true,
