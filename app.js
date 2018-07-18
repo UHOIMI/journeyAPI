@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 //route指定
 var spotRouter = require('./routes/spot');
+var planRouter = require('./routes/plan');
 
 
 var app = express();
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //エンドポイント指定
 app.use('/api/v1/spot',spotRouter);
+app.use('/api/v1/plan',planRouter);
 
 
 // catch 404 and forward to error handler
