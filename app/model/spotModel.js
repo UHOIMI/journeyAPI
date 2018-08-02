@@ -30,7 +30,13 @@ const spot = dbConfig.define('spot',{
     spot_comment:{
         type: Sequelize.TEXT,
     },
-    spot_image:{
+    spot_image_A:{
+        type: Sequelize.TEXT,
+    },
+    spot_image_B:{
+        type: Sequelize.TEXT,
+    },
+    spot_image_C:{
         type: Sequelize.TEXT,
     },
     date:{
