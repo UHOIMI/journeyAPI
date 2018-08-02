@@ -7,7 +7,7 @@ var logger = require('morgan');
 //route指定
 var spotRouter = require('./routes/spot');
 var planRouter = require('./routes/plan');
-
+var favoriteRouter = require('./routes/favorite');
 
 var app = express();
 // view engine setup
@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //エンドポイント指定
 app.use('/api/v1/spot',spotRouter);
 app.use('/api/v1/plan',planRouter);
-
+app.use('/api/v1/favorite',favoriteRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
