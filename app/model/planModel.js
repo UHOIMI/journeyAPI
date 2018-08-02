@@ -197,8 +197,12 @@ const plan = dbConfig.define('plan',{
         },
     },
     date:{
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
+    },
+    area:{
+        type: Sequelize.STRING(4),
+        notNull,
     },
 });
 
