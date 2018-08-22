@@ -32,7 +32,7 @@ const plan = dbConfig.define('plan',{
         notNull,
     },
     price:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(15),
         notNull,
     },
     spot_id_a:{
