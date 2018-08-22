@@ -8,6 +8,7 @@ var logger = require('morgan');
 var spotRouter = require('./routes/spot');
 var planRouter = require('./routes/plan');
 var favoriteRouter = require('./routes/favorite');
+var timelineRouter = require('./routes/timeline');
 
 var app = express();
 // view engine setup
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/spot',spotRouter);
 app.use('/api/v1/plan',planRouter);
 app.use('/api/v1/favorite',favoriteRouter);
+app.use('/api/v1/timeline',timelineRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
