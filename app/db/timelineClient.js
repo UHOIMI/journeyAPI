@@ -43,9 +43,32 @@ var DbClient = function() {
     });
   }
 
-  DbClient.prototype.find = function find(query, callback) {
+    //areaが指定されている場合
+var findById = function find(offset,area, callback) {
     plan.findAll({
-        offset: query.offset,
+        offset: offset,
+        limit: 2,
+        where: {
+            area: area,
+        },
+        order: [['date', 'DESC']],
+    })
+    .then((record) => {
+        if (record) {
+            callback(setResult(200, record, null));
+        } else {
+            callback(setResult(404, null, null));
+        }
+    })
+    .catch((err) => {
+        callback(setResult(500, null, err));
+    });
+  }
+  
+    //areaがない場合
+  var findAll = function find(offset,callback) {
+    plan.findAll({
+        offset: offset,
         limit: 2,
         order: [['date', 'DESC']],
     })
@@ -60,5 +83,13 @@ var DbClient = function() {
         callback(setResult(500, null, err));
     });
   }
+
+  DbClient.prototype.find = function find(query, callback) {
+    if (query.area) {
+      findById(query.offset,query.area, callback);
+    } else {
+      findAll(query.offset,callback);
+    }
+  };
 
   module.exports = new DbClient();
