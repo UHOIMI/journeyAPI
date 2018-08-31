@@ -50,8 +50,12 @@ var result = {
         }
     })
     .then((record) => {
-      callback(setResult(200, record, null));
-    })
+      if (record == "") {
+          callback(setResult(404, null, null));
+      } else {
+          callback(setResult(200, record, null));
+      }
+      })
     .catch((err) => {
       callback(setResult(500, null, err));
     });
@@ -66,10 +70,10 @@ var result = {
         }
     })
     .then((record) => {
-      if (record) {
-        callback(setResult(200, record, null));
+      if (record == "") {
+          callback(setResult(404, null, null));
       } else {
-        callback(setResult(404, null, null));
+          callback(setResult(200, record, null));
       }
     })
     .catch((err) => {

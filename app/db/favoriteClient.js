@@ -49,10 +49,10 @@ var findUser = function findAll(user_id,callback) {
         }
     })
     .then((record) => {
-        if (record) {
-            callback(setResult(200, record, null));
-        } else {
+        if (record == "") {
             callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
         }
     })
     .catch((err) => {
@@ -68,10 +68,10 @@ var findPlan = function findAll(plan_id,callback) {
         }
     })
     .then((record) => {
-        if (record) {
-            callback(setResult(200, record, null));
-        } else {
+        if (record == "") {
             callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
         }
     })
     .catch((err) => {
@@ -88,10 +88,10 @@ var findById = function findById(user_id,plan_id,callback) {
         }
     })
     .then((record) => {
-        if (record) {
-            callback(setResult(200, record, null));
-        } else {
+        if (record == "") {
             callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
         }
     })
     .catch((err) => {
@@ -147,10 +147,10 @@ DbClient.prototype.remove = function remove(query, callback) {
             }
         })
         .then((record) => {
-            if (record) {
-                callback(setResult(200, record, null));
-            } else {
+            if (record == "") {
                 callback(setResult(404, null, null));
+            } else {
+                callback(setResult(200, record, null));
             }
         })
         .catch((err) => {
@@ -165,10 +165,10 @@ DbClient.prototype.remove = function remove(query, callback) {
             }
         })
         .then((record) => {
-            if (record) {
-                callback(setResult(200, record, null));
-            } else {
+            if (record == "") {
                 callback(setResult(404, null, null));
+            } else {
+                callback(setResult(200, record, null));
             }
         })
         .catch((err) => {

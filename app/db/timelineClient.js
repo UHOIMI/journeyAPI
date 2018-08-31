@@ -54,10 +54,10 @@ var findById = function find(offset,area, callback) {
         order: [['date', 'DESC']],
     })
     .then((record) => {
-        if (record) {
-            callback(setResult(200, record, null));
-        } else {
+        if (record == "") {
             callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
         }
     })
     .catch((err) => {
@@ -73,10 +73,10 @@ var findById = function find(offset,area, callback) {
         order: [['date', 'DESC']],
     })
     .then((record) => {
-        if (record) {
-            callback(setResult(200, record, null));
-        } else {
+        if (record == "") {
             callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
         }
     })
     .catch((err) => {
