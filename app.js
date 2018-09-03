@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-app.use(cors());
+
 
 //route指定
 var spotRouter = require('./routes/spot');
@@ -13,6 +13,7 @@ var favoriteRouter = require('./routes/favorite');
 var timelineRouter = require('./routes/timeline');
 
 var app = express();
+app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
