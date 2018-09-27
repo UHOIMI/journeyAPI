@@ -11,6 +11,7 @@ var spotRouter = require('./routes/spot');
 var planRouter = require('./routes/plan');
 var favoriteRouter = require('./routes/favorite');
 var timelineRouter = require('./routes/timeline');
+var imgRouter = require('./routes/imageUpload');
 
 var app = express();
 app.use(cors());
@@ -29,6 +30,7 @@ app.use('/api/v1/spot',spotRouter);
 app.use('/api/v1/plan',planRouter);
 app.use('/api/v1/favorite',favoriteRouter);
 app.use('/api/v1/timeline',timelineRouter);
+app.use('/api/v1/image',imgRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
