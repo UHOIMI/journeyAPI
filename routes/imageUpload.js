@@ -9,11 +9,11 @@ var storage = multer.diskStorage({
     },
     // ファイル名を指定(オリジナルのファイル名を指定)
     filename: function (req, file, cb) {
-      cb(null, file.originalname)
+      cb(null, Date.now() + file.originalname)
     }
   })
 
-  var upload = multer({ storage: storage }).single('image');
+  var upload = multer({ storage: storage }).array('image',3);
 
 //var upload = multer({ dest: './uploads/' }).single('image');
 
@@ -24,9 +24,12 @@ router.get('/', function(req, res, next) {
 router.post('/upload', function(req, res) {
   upload(req, res, function(err) {
     if(err) {
-      res.json("Failed to write " + req.file.destination + " with " + err);
+        res.json('error');
     } else {
-      res.json("uploaded " +  req.file.filename + " Size: " + req.file.size);
+        var filepaths = req.files.map(function(file) {
+            return file.path;
+        });
+        res.json(filepaths);
     }
   });
 });
