@@ -1,11 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
+var fs = require('fs');
+
+//保存先
+var Uppath = './uploads'; 
 
 var storage = multer.diskStorage({
     // ファイルの保存先を指定
     destination: function (req, file, cb) {
-      cb(null, './uploads')
+      cb(null, Uppath)
     },
     // ファイル名を指定(オリジナルのファイル名を指定)
     filename: function (req, file, cb) {
@@ -13,13 +17,11 @@ var storage = multer.diskStorage({
     }
   })
 
-  var upload = multer({ storage: storage }).array('image',3);
+var upload = multer({ storage: storage ,limits:{fileSize:5000000}}).array('image',3);
 
-//var upload = multer({ dest: './uploads/' }).single('image');
-
-router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express' });
-  });
+router.get('/', function(req, res){
+   
+});
 
 router.post('/upload', function(req, res) {
   upload(req, res, function(err) {
@@ -32,6 +34,17 @@ router.post('/upload', function(req, res) {
         res.json(filepaths);
     }
   });
+});
+
+router.delete('/delete', function(req, res){
+    var path = (Uppath +'/'+ req.query.image_name);
+    fs.unlink(path,function(err){
+        if(err){
+            res.json(err);
+        } else {
+            res.json('success');
+        }
+    });
 });
 
 module.exports = router;
