@@ -28,8 +28,9 @@ router.post('/upload', function(req, res) {
     if(err) {
         res.json('error');
     } else {
+        console.log(req.files);
         var filepaths = req.files.map(function(file) {
-            return file.path;
+            return file.filename;
         });
         res.json(filepaths);
     }
