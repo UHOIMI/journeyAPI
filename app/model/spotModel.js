@@ -11,7 +11,7 @@ const spot = dbConfig.define('spot',{
         autoIncrement: true,
     },
     user_id:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(20),
         notNull,
         references:{
             model:users,

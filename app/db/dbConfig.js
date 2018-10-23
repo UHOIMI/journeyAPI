@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 
-const dbConfig = new Sequelize('test', 'postgres', 'Minosannv1', {
-   host: '35.200.49.1',
+const dbConfig = new Sequelize('jndb', 'postgres', 'Minosannv1', {
+   host: '35.200.26.70',
    dialect: 'postgres',
 
    pool: {
@@ -10,7 +10,7 @@ const dbConfig = new Sequelize('test', 'postgres', 'Minosannv1', {
     acquire: 30000,
     idle: 10000
   },
-  logging:false,
+  logging: false,
   define: {
     timestamps: false, 
     freezeTableName: true,

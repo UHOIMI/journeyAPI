@@ -16,7 +16,7 @@ const favorite = dbConfig.define('favorite',{
         },
     },
     user_id:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.String(20),
         primaryKey: true,
         notNull,
         references:{

@@ -6,12 +6,14 @@ const notNull = true;
 
 const users = dbConfig.define('users',{
     user_id:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(20),
         primaryKey: true,
-        autoIncrement: true,
+    },
+    user_pass:{
+        type: Sequelize.STRING(20),
     },
     user_name:{
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         notNull,
     },
     generation:{
