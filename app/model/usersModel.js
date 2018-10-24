@@ -10,7 +10,7 @@ const users = dbConfig.define('users',{
         primaryKey: true,
     },
     user_pass:{
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(150),
     },
     user_name:{
         type: Sequelize.STRING(20),

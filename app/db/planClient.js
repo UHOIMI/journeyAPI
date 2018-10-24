@@ -85,8 +85,6 @@ var result = {
   DbClient.prototype.find = function find(query, callback) {
     if (query.user_id   && query.plan_id) {
       findById(query.plan_id,query.user_id, callback);
-      console.log(query.user_id);
-      console.log(query.plan_id);
     } else {
       findAll(query.user_id,callback);
     }
