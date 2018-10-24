@@ -21,7 +21,7 @@ const plan = dbConfig.define('plan',{
         },
     },
     plan_title:{
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         notNull,
     },
     plan_comment:{
