@@ -9,7 +9,6 @@ var result = {
     record: null,
     message: ""
 };
-  
 
 var initializeResult = function initializeResult() {
     result.status = null,
@@ -25,7 +24,6 @@ var setResult = function setResult(status, record, message) {
     } else {
         result.message = message;
     }
-  
     return result;
 };
   
@@ -41,7 +39,8 @@ var DbClient = function() {
         console.error('plan Unable to connect to the database:', err);
     });
 }
-  //ユーザーIDに紐づけされたレコード取得
+
+//ユーザーIDに紐づけされたレコード取得
 var findUser = function findAll(user_id,callback) {
     favorite.findAll({
         where:{
@@ -60,7 +59,7 @@ var findUser = function findAll(user_id,callback) {
     });
 };
 
-  //プランIDに紐づけされたレコード取得
+//プランIDに紐づけされたレコード取得
 var findPlan = function findAll(plan_id,callback) {
     favorite.findAll({
         where:{
@@ -79,7 +78,7 @@ var findPlan = function findAll(plan_id,callback) {
     });
 };
 
-  //ユーザーIDとプランIDに紐づけされたレコードを取得
+//ユーザーIDとプランIDに紐づけされたレコードを取得
 var findById = function findById(user_id,plan_id,callback) {
     favorite.findAll({
         where:{
@@ -114,12 +113,12 @@ DbClient.prototype.find = function find(query, callback) {
 DbClient.prototype.register = function register(param, callback) {
     favorite.create(param)
     .then((record) => {
-      callback(setResult(200, record, null));
+        callback(setResult(200, record, null));
     })
     .catch((err) => {
-      callback(setResult(500, null, err));
+        callback(setResult(500, null, err));
     });
-  };
+};
 
 //レコード削除
 DbClient.prototype.remove = function remove(query, callback) {
@@ -129,7 +128,6 @@ DbClient.prototype.remove = function remove(query, callback) {
             user_id: query.user_id,
         }
     };
-      
     favorite.destroy(filter)
         .then((record) => {
             callback(setResult(200, record, null));
@@ -137,53 +135,53 @@ DbClient.prototype.remove = function remove(query, callback) {
         .catch((err) => {
             callback(setResult(500, null, err));
         });
-    };
+};
 
-    //プランのお気に入り数をカウント
-    var findPlanCount = function findAll(plan_id,callback) {
-        favorite.findAndCountAll({
-            where:{
-                plan_id: plan_id,
-            }
-        })
-        .then((record) => {
-            if (record == "") {
-                callback(setResult(404, null, null));
-            } else {
-                callback(setResult(200, record, null));
-            }
-        })
-        .catch((err) => {
-            callback(setResult(500, null, err));
-        });
-    };
-    //ユーザーのお気に入り数をカウント
-    var findUserCount = function findAll(user_id,callback) {
-        favorite.findAndCountAll({
-            where:{
-                user_id: user_id,
-            }
-        })
-        .then((record) => {
-            if (record == "") {
-                callback(setResult(404, null, null));
-            } else {
-                callback(setResult(200, record, null));
-            }
-        })
-        .catch((err) => {
-            callback(setResult(500, null, err));
-        });
-    };
-//処理わけとレコード取得
-    DbClient.prototype.findCount = function find(query, callback) {
-        if (query.plan_id) {
-            findPlanCount(query.plan_id, callback);
-        }else{
-            findUserCount(query.user_id, callback);
+//プランのお気に入り数をカウント
+var findPlanCount = function findAll(plan_id,callback) {
+    favorite.findAndCountAll({
+        where:{
+            plan_id: plan_id,
         }
-    };
+    })
+    .then((record) => {
+        if (record == "") {
+            callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
+        }
+    })
+    .catch((err) => {
+        callback(setResult(500, null, err));
+    });
+};
 
+//ユーザーのお気に入り数をカウント
+var findUserCount = function findAll(user_id,callback) {
+    favorite.findAndCountAll({
+        where:{
+            user_id: user_id,
+        }
+    })
+    .then((record) => {
+        if (record == "") {
+            callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
+        }
+    })
+    .catch((err) => {
+        callback(setResult(500, null, err));
+    });
+};
 
+//処理わけとレコード取得
+DbClient.prototype.findCount = function find(query, callback) {
+    if (query.plan_id) {
+        findPlanCount(query.plan_id, callback);
+    }else{
+        findUserCount(query.user_id, callback);
+    }
+};
 
 module.exports = new DbClient();

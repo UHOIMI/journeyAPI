@@ -13,9 +13,9 @@ router.get('/find', function(req, res, next) {
 router.post('/register', function(req, res, next) {
     const addData = req.body;
     favorite.register(addData, function(result) {
-      res.json(result);
+        res.json(result);
     });
-  });
+});
 
 router.delete('/delete', function(req, res, next) {
     const query = req.body;

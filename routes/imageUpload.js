@@ -9,13 +9,13 @@ var Uppath = './uploads';
 var storage = multer.diskStorage({
     // ファイルの保存先を指定
     destination: function (req, file, cb) {
-      cb(null, Uppath)
+        cb(null, Uppath)
     },
     // ファイル名を指定(オリジナルのファイル名を指定)
     filename: function (req, file, cb) {
-      cb(null, Date.now() + file.originalname)
+        cb(null, Date.now() + file.originalname)
     }
-  })
+})
 
 var upload = multer({ storage: storage ,limits:{fileSize:5000000}}).array('image',3);
 
@@ -24,17 +24,17 @@ router.get('/', function(req, res){
 });
 
 router.post('/upload', function(req, res) {
-  upload(req, res, function(err) {
-    if(err) {
-        res.json('error');
-    } else {
-        console.log(req.files);
-        var filepaths = req.files.map(function(file) {
-            return file.filename;
-        });
-        res.json(filepaths);
-    }
-  });
+    upload(req, res, function(err) {
+        if(err) {
+            res.json('error');
+        } else {
+            console.log(req.files);
+            var filepaths = req.files.map(function(file) {
+                return file.filename;
+            });
+            res.json(filepaths);
+        }
+    });
 });
 
 router.delete('/delete', function(req, res){

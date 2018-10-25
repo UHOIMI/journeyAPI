@@ -11,7 +11,6 @@ var result = {
     message: ""
 };
   
-
 var initializeResult = function initializeResult() {
     result.status = null,
     result.record = null,
@@ -26,7 +25,6 @@ var setResult = function setResult(status, record, message) {
     } else {
         result.message = message;
     }
-  
     return result;
 };
 
@@ -36,14 +34,14 @@ var DbClient = function() {
     dbConfig
     .authenticate()
     .then(() => {
-      console.log('Connection has been established successfully for timeline');
+        console.log('Connection has been established successfully for timeline');
     })
     .catch((err) => {
-      console.error('plan Unable to connect to the database:', err);
+        console.error('plan Unable to connect to the database:', err);
     });
-  }
+}
 
-    //areaが指定されている場合
+//areaが指定されている場合
 var findById = function find(offset,area, callback) {
     plan.findAll({
         offset: offset,
@@ -63,10 +61,10 @@ var findById = function find(offset,area, callback) {
     .catch((err) => {
         callback(setResult(500, null, err));
     });
-  }
+}
   
-    //areaがない場合
-  var findAll = function find(offset,callback) {
+//areaがない場合
+var findAll = function find(offset,callback) {
     plan.findAll({
         offset: offset,
         limit: 2,
@@ -82,14 +80,14 @@ var findById = function find(offset,area, callback) {
     .catch((err) => {
         callback(setResult(500, null, err));
     });
-  }
+}
 
-  DbClient.prototype.find = function find(query, callback) {
+DbClient.prototype.find = function find(query, callback) {
     if (query.area) {
-      findById(query.offset,query.area, callback);
+        findById(query.offset,query.area, callback);
     } else {
-      findAll(query.offset,callback);
+        findAll(query.offset,callback);
     }
-  };
+};
 
-  module.exports = new DbClient();
+module.exports = new DbClient();
