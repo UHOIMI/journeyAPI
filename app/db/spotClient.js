@@ -59,12 +59,11 @@ var findAll = function findAll(user_id,callback) {
     });
 };
   
-//spot_idとuser_id に紐付くレコードを取得
-var findById = function findById(spot_id,user_id, callback) {
+//spot_idに紐付くレコードを取得
+var findById = function findById(spot_id, callback) {
     spot.findAll({
         where:{
-            spot_id: spot_id,
-            user_id: user_id,   
+            spot_id: spot_id,   
         }
     })
     .then((record) => {
@@ -81,10 +80,8 @@ var findById = function findById(spot_id,user_id, callback) {
 
 //レコード取得
 DbClient.prototype.find = function find(query, callback) {
-    if (query.user_id   && query.spot_id) {
-        findById(query.spot_id,query.user_id, callback);
-        console.log(query.user_id);
-        console.log(query.spot_id);
+    if (query.spot_id) {
+        findById(query.spot_id, callback);
     } else {
         findAll(query.user_id,callback);
     }
