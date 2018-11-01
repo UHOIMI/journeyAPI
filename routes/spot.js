@@ -11,9 +11,9 @@ router.get('/find', function(req, res, next) {
 });
 
 router.post('/register',VerifyToken, function(req, res, next) {
-    req.body.user_id = req.decoded.id
+    req.body.user_id = req.decoded.user_id
     const addData = req.body;
-    console.log(req.decoded.id);
+    console.log(req.decoded.user_id);
     spot.register(addData, function(result) {
         res.json(result);
     });
