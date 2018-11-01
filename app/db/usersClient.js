@@ -152,8 +152,8 @@ DbClient.prototype.login = function login(param,callback){
             callback(setResult(404, null, null));
         } else {
             var user = { user_id: param.user_id, };  //. トークンの素になるオブジェクト
-            var token = jwt.sign( user, Auconfig.secret, { expiresIn: '25h' } );
-            callback(setResult(200, token, null));
+            var token = jwt.sign( user, Auconfig.secret, { expiresIn: '1m' },{ algorithm: 'RS256'} );
+            callback(token);
         }
     })    
     .catch((err) => {
