@@ -2,6 +2,9 @@ var dbConfig = require('./dbConfig');
 var Sequelize = require('sequelize');
 var users = require('../model/usersModel');
 var crypto = require("crypto");
+var jwt = require( 'jsonwebtoken' );
+var session = require( 'express-session' );
+var Auconfig = require('../../Auconfig');
 
 var result = {
     status: null,
@@ -105,7 +108,7 @@ DbClient.prototype.register = function register(param, callback) {
     });
 };
 
-    //レコード更新
+//レコード更新
 DbClient.prototype.update = function update(param, query, callback) {
     const filter = {
         where: {
@@ -136,6 +139,9 @@ DbClient.prototype.login = function login(param,callback){
         param.user_pass=hash;
     }
     users.findAll({
+        attributes:[
+            'user_id'
+        ],
         where:{
             user_id: param.user_id,
             user_pass: param.user_pass
@@ -145,12 +151,14 @@ DbClient.prototype.login = function login(param,callback){
         if (record == "") {
             callback(setResult(404, null, null));
         } else {
-            callback(setResult(200, record[0].user_id, null));
+            var user = { id: param.user_id, };  //. トークンの素になるオブジェクト
+            var token = jwt.sign( user, Auconfig.secret, { expiresIn: '25h' } );
+            callback(setResult(200, token, null));
         }
-      })
-      .catch((err) => {
+    })    
+    .catch((err) => {
         callback(setResult(500, null, err));
-      });
+    });
 };
 
 module.exports = new DbClient();

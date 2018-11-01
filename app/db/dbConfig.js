@@ -9,7 +9,7 @@ const dbConfig = new Sequelize('jndb', 'postgres', 'Minosannv1', {
         acquire: 30000,
         idle: 10000
     },
-    logging: false,
+    logging: true,
         define: {
         timestamps: false, 
         freezeTableName: true,

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var spot = require('../app/db/spotClient');
+var VerifyToken = require('../verifyToken');
 
 router.get('/find', function(req, res, next) {
     const query = req.query;
@@ -9,8 +10,10 @@ router.get('/find', function(req, res, next) {
     });
 });
 
-router.post('/register', function(req, res, next) {
+router.post('/register',VerifyToken, function(req, res, next) {
+    req.body.user_id = req.decoded.id
     const addData = req.body;
+    console.log(req.decoded.id);
     spot.register(addData, function(result) {
         res.json(result);
     });

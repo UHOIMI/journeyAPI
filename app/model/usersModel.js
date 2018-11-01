@@ -35,7 +35,6 @@ const users = dbConfig.define('users',{
     },
     comment:{
         type: Sequelize.TEXT,
-        notNull,
     },
     user_icon:{
         type: Sequelize.TEXT,
