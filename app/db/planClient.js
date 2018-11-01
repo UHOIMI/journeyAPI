@@ -92,7 +92,11 @@ DbClient.prototype.find = function find(query, callback) {
 DbClient.prototype.register = function register(param, callback) {
     plan.create(param)
     .then((record) => {
-        callback(setResult(200, record, null));
+        if (record == "") {
+            callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
+        }
     })
     .catch((err) => {
         callback(setResult(500, null, err));
@@ -100,15 +104,20 @@ DbClient.prototype.register = function register(param, callback) {
 };
 
 //レコード更新
-DbClient.prototype.update = function update(param, query, callback) {
+DbClient.prototype.update = function update(param, callback) {
     const filter = {
         where: {
-            plan_id: query.plan_id
+            user_id: param.user_id,
+            plan_id: param.plan_id,
         }
     };
     plan.update(param, filter)
     .then((record) => {
-        callback(setResult(200, record, null));
+        if (record == "") {
+            callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
+        }
     })
     .catch((err) => {
         callback(setResult(500, null, err));
@@ -116,15 +125,20 @@ DbClient.prototype.update = function update(param, query, callback) {
 };
 
 //レコード削除
-DbClient.prototype.remove = function remove(query, callback) {
+DbClient.prototype.remove = function remove(param, callback) {
     const filter = {
         where: {
-            plan_id: query.plan_id
+            user_id: param.user_id,
+            plan_id: param.plan_id
         }
     };
     plan.destroy(filter)
     .then((record) => {
-        callback(setResult(200, record, null));
+        if (record == "") {
+            callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
+        }
     })
     .catch((err) => {
         callback(setResult(500, null, err));

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var users = require('../app/db/usersClient');
+var VerifyToken = require('../verifyToken');
 
 router.get('/find', function(req, res, next) {
     const query = req.query;
@@ -16,10 +17,10 @@ router.post('/register', function(req, res, next) {
     });
 });
   
-router.put('/update', function(req, res, next) {
-    const query = req.query;
+router.put('/update',VerifyToken, function(req, res, next) {
+    req.body.user_id = req.decoded.user_id
     const addData = req.body;
-    users.update(addData, query, function(result) {
+    users.update(addData, function(result) {
       res.json(result);
     });
 });

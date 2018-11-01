@@ -99,15 +99,20 @@ DbClient.prototype.register = function register(param, callback) {
 };
 
   //レコード更新
-DbClient.prototype.update = function update(param, query, callback) {
+DbClient.prototype.update = function update(param, callback) {
     const filter = {
         where:{
-            spot_id: query.spot_id,
+            user_id: param.user_id,
+            spot_id: param.spot_id,
         },
     };
     spot.update(param, filter)
     .then((record) => {
-        callback(setResult(200, record, null));
+        if (record == "") {
+            callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
+        }
     })
     .catch((err) => {
         callback(setResult(500, null, err));
@@ -115,15 +120,20 @@ DbClient.prototype.update = function update(param, query, callback) {
 };
  
 //レコード削除
-DbClient.prototype.remove = function remove(query, callback) {
+DbClient.prototype.remove = function remove(param, callback) {
     const filter = {
         where: {
-            spot_id: query.spot_id
+            user_id: param.user_id,
+            spot_id: param.spot_id
         }
     };
     spot.destroy(filter)
     .then((record) => {
-        callback(setResult(200, record, null));
+        if (record == "") {
+            callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
+        }
     })
     .catch((err) => {
         callback(setResult(500, null, err));

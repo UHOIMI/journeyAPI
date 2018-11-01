@@ -109,10 +109,10 @@ DbClient.prototype.register = function register(param, callback) {
 };
 
 //レコード更新
-DbClient.prototype.update = function update(param, query, callback) {
+DbClient.prototype.update = function update(param, callback) {
     const filter = {
         where: {
-            user_id: query.user_id
+            user_id: param.user_id
         }
     };
     if (param.user_pass){
@@ -152,7 +152,7 @@ DbClient.prototype.login = function login(param,callback){
             callback(setResult(404, null, null));
         } else {
             var user = { user_id: param.user_id, };  //. トークンの素になるオブジェクト
-            var token = jwt.sign( user, Auconfig.secret, { expiresIn: '1m' },{ algorithm: 'RS256'} );
+            var token = jwt.sign( user, Auconfig.secret, { expiresIn: '1h' },{ algorithm: 'RS256'} );
             callback(token);
         }
     })    

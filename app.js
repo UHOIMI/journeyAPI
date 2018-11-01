@@ -13,32 +13,11 @@ var favoriteRouter = require('./routes/favorite');
 var timelineRouter = require('./routes/timeline');
 var imgRouter = require('./routes/imageUpload');
 var usersRouter = require('./routes/users');
-var searchRouter = require('./routes/search');
-var jwt = require( 'jsonwebtoken' );
-var session = require( 'express-session' );
-var Auconfig = require('./Auconfig');
+var searchRouter = require('./routes/search')
 var app = express();
-
-//鍵
-
 
 //cors全部許可
 app.use(cors());
-
-//鍵をセット
-
-//session設定
-app.use( session({
-    secret: Auconfig.secret,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: false,           //. https で使う場合は true
-      maxage: 1000 * 60 * 60   //. 60min
-    }
-  }) );
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

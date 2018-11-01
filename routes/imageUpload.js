@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var multer = require('multer');
 var fs = require('fs');
+var VerifyToken = require('../verifyToken');
 
 //保存先
 var Uppath = './uploads'; 
@@ -19,10 +20,6 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage ,limits:{fileSize:5000000}}).array('image',3);
 
-router.get('/', function(req, res){
-   
-});
-
 router.post('/upload', function(req, res) {
     upload(req, res, function(err) {
         if(err) {
@@ -38,7 +35,7 @@ router.post('/upload', function(req, res) {
 });
 
 router.delete('/delete', function(req, res){
-    var path = (Uppath +'/'+ req.query.image_name);
+    var path = (Uppath +'/'+ req.body.image_name);
     fs.unlink(path,function(err){
         if(err){
             res.json(err);
