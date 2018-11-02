@@ -77,7 +77,8 @@ var findKGAP = function findKGAP(keyword,generation,area,price,callback) {
                 {price: price},
                 {user_id: {$in: generationSQL}},
             ]
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
       if (record == "") {
@@ -125,7 +126,8 @@ var findKGA = function findKGA(keyword, generation, area, callback) {
                 {area: area},
                 {user_id: {$in: generationSQL}},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -173,7 +175,8 @@ var findKGP = function findKGP(keyword, generation, price, callback) {
                 {price: price},
                 {user_id: {$in: generationSQL}},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -220,7 +223,8 @@ var findKAP = function findKAP(keyword, area, price, callback) {
                 {area: area},
                 {price: price},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -244,7 +248,8 @@ var findGAP = function findGAP(generation, area, price, callback) {
                 {price: price},
                 {user_id: {$in: generationSQL}},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -290,7 +295,8 @@ var findKG = function findKG(keyword, generation, callback) {
             $and:[
                 {user_id: {$in: generationSQL}},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -335,7 +341,8 @@ var findKA = function findKA(keyword, area, callback) {
             $and:[
                 {area: area},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -380,7 +387,8 @@ var findKP = function findKP(keyword, price, callback) {
             $and:[
                 {price: price},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -403,7 +411,8 @@ var findGA = function findGA(generation, area, callback) {
                 {area: area},
                 {user_id: {$in: generationSQL}},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -426,7 +435,8 @@ var findGP = function findGP(generation, price, callback) {
                 {price: price},
                 {user_id: {$in: generationSQL}},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -447,7 +457,8 @@ var findAP = function findAP(area, price, callback) {
                 {area: area},
                 {price: price},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -489,7 +500,8 @@ var findK = function findK(keyword, callback) {
                 {spot_id_s: { $in: spotSQL }},
                 {spot_id_t: { $in: spotSQL }},
             ], 
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -510,7 +522,8 @@ var findG = function findG(generation, callback) {
             $and:[
                 {user_id: {$in: generationSQL}},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -530,7 +543,8 @@ var findA = function findA(area, callback) {
             $and:[
                 {area: area},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -550,7 +564,8 @@ var findP = function findP(price, callback) {
             $and:[
                 {price: price},
             ]   
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
