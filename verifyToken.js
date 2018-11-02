@@ -9,7 +9,7 @@ function verifyToken(req, res, next) {
     // jwtの認証をする
         jwt.verify(token, Auconfig.secret, function(error, decoded) {
         if (error) {
-            return res.json({ status:'404',record: error.name, message: error.message });
+            return res.json({ status:'403',record: error.name, message: error.message });
         } else {
             // 認証に成功したらdecodeされた情報をrequestに保存する
             req.decoded = decoded;
@@ -21,7 +21,7 @@ function verifyToken(req, res, next) {
     } else {
         // トークンがなければエラーを返す
         return res.status(403).send({
-        status:'404',record: null, message: 'トークンがありません' 
+        status:'403',record: null, message: 'トークンがありません' 
     });
 
     }
