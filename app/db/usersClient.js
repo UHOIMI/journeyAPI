@@ -98,10 +98,12 @@ DbClient.prototype.register = function register(param, callback) {
         sha512.update(param.user_pass);
         var hash = sha512.digest('hex')
         param.user_pass=hash;
-    }else{}
+    }
     users.create(param)
     .then((record) => {
-        callback(setResult(200, record, null));
+        var user = { user_id: param.user_id, };  //. トークンの素になるオブジェクト
+        var token = jwt.sign( user, Auconfig.secret, { expiresIn: '1h' },{ algorithm: 'RS256'} );
+        callback(token);
     })
     .catch((err) => {
         callback(setResult(500, null, err));
@@ -152,7 +154,7 @@ DbClient.prototype.login = function login(param,callback){
             callback(setResult(404, null, null));
         } else {
             var user = { user_id: param.user_id, };  //. トークンの素になるオブジェクト
-            var token = jwt.sign( user, Auconfig.secret, { expiresIn: '1m' },{ algorithm: 'RS256'} );
+            var token = jwt.sign( user, Auconfig.secret, { expiresIn: '1h' },{ algorithm: 'RS256'} );
             callback(token);
         }
     })    
