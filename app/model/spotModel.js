@@ -24,8 +24,13 @@ const spot = dbConfig.define('spot',{
         notNull,
     },
     spot_address:{
-        type: 'Point',
+        type: 'POINT',
         notNull,
+        get: function(){
+            address = this.getDataValue('spot_address');
+            result = JSON.parse(JSON.stringify({lat:address.x,lng:address.y}));
+            return result;
+        },
     },
     spot_comment:{
         type: Sequelize.TEXT,
