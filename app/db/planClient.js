@@ -60,11 +60,10 @@ var findAll = function findAll(user_id,callback) {
 };
   
 //spot_idとuser_id に紐付くレコードを取得
-var findById = function findById(plan_id,user_id, callback) {
+var findById = function findById(plan_id, callback) {
     plan.findAll({
         where:{
-            plan_id: plan_id,
-            user_id: user_id,   
+            plan_id: plan_id,   
         }
     })
     .then((record) => {
@@ -81,8 +80,8 @@ var findById = function findById(plan_id,user_id, callback) {
 
 //レコード取得
 DbClient.prototype.find = function find(query, callback) {
-    if (query.user_id   && query.plan_id) {
-        findById(query.plan_id,query.user_id, callback);
+    if (query.plan_id) {
+        findById(query.plan_id, callback);
     } else {
         findAll(query.user_id,callback);
     }

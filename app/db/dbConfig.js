@@ -11,7 +11,7 @@ const dbConfig = new Sequelize('jndb', 'postgres', 'Minosannv1', {
     },
     logging: true,
         define: {
-        timestamps: false, 
+        timestamps: false,
         freezeTableName: true,
     },
 });

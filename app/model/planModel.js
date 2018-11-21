@@ -2,6 +2,7 @@ var Sequelize = require('sequelize');
 var users = require('./usersModel');
 var spot = require('./spotModel');
 var dbConfig = require('../db/dbConfig');
+var moment = require("moment");
 
 const notNull = true;
 
@@ -199,6 +200,11 @@ const plan = dbConfig.define('plan',{
     date:{
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
+        get: function(){
+            date = this.getDataValue('date');
+            result= JSON.parse(JSON.stringify(moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss')));
+            return result;
+        },
     },
     area:{
         type: Sequelize.STRING(4),

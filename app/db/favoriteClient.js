@@ -45,7 +45,8 @@ var findUser = function findAll(user_id,callback) {
     favorite.findAll({
         where:{
             user_id: user_id,
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
@@ -64,7 +65,8 @@ var findPlan = function findAll(plan_id,callback) {
     favorite.findAll({
         where:{
             plan_id: plan_id,
-        }
+        },
+        order: [['date', 'DESC']],
     })
     .then((record) => {
         if (record == "") {
