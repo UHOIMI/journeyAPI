@@ -11,8 +11,8 @@ const dbConfig = new Sequelize('jndb', 'postgres', 'Minosannv1', {
     },
     logging: true,
         define: {
-        timestamps: false,
-        freezeTableName: true,
+        timestamps: false, //UpdateAtとCreatedAtを無効化
+        freezeTableName: true, //テーブル名をそのままで
     },
 });
 
