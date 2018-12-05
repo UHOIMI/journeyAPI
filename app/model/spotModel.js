@@ -18,9 +18,18 @@ const spot = dbConfig.define('spot',{
             key:'plan_id',
             deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
         },
+    },    
+    user_id:{
+        type: Sequelize.STRING(20),
+        notNull,
+        references:{
+            model:model.plan,
+            key:'plan_id',
+            deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
+        },
     },
     spot_title:{
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         notNull,
     },
     spot_address:{
