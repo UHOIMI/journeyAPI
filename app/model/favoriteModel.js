@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
-var users = require('./usersModel');
-var plan = require('./planModel');
+var model = require('./model');
 var dbConfig = require('../db/dbConfig');
+var moment = require("moment");
 
 const notNull = true;
 
@@ -10,7 +10,7 @@ const favorite = dbConfig.define('favorite',{
         type: Sequelize.INTEGER,
         primaryKey: true,
         references:{
-            model:plan,
+            model:model.plan,
             key:'plan_id',
             deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
         },
@@ -20,14 +20,15 @@ const favorite = dbConfig.define('favorite',{
         primaryKey: true,
         notNull,
         references:{
-            model:users,
+            model:model.users,
             key:'user_id',
             deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
         },
     },
-    date:{
+    fav_date:{
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
+        field:'date',
         get: function(){
             date = this.getDataValue('date');
             result= JSON.parse(JSON.stringify(moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss')));

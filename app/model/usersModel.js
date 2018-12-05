@@ -1,7 +1,5 @@
 var Sequelize =  require('sequelize');
 const dbConfig = require('../db/dbConfig');
-
-//usersテーブルのモデル
 const notNull = true;
 
 const users = dbConfig.define('users',{
@@ -30,7 +28,7 @@ const users = dbConfig.define('users',{
         notNull,
     },
     gender:{
-        type: Sequelize.ENUM('男','女'),
+        type: Sequelize.ENUM('男性','女性'),
         notNull,
     },
     comment:{
@@ -45,6 +43,11 @@ const users = dbConfig.define('users',{
 },{
     timestamp: false,
     freezeTableName: true,
+    defaultScope: {
+        attributes: {
+            exclude: ['user_pass'],
+        },
+    },
 });
 
 module.exports = users; 

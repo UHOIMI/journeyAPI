@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var users = require('./usersModel');
+var model = require('./model');
 var dbConfig = require('../db/dbConfig');
 
 const notNull = true;
@@ -10,12 +10,12 @@ const spot = dbConfig.define('spot',{
         primaryKey: true,
         autoIncrement: true,
     },
-    user_id:{
-        type: Sequelize.STRING(20),
+    plan_id:{
+        type: Sequelize.INTEGER,
         notNull,
         references:{
-            model:users,
-            key:'user_id',
+            model:model.plan,
+            key:'plan_id',
             deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
         },
     },
@@ -28,8 +28,10 @@ const spot = dbConfig.define('spot',{
         notNull,
         get: function(){
             address = this.getDataValue('spot_address');
-            result = JSON.parse(JSON.stringify({lat:address.x,lng:address.y}));
-            return result;
+            if(address){
+                result = JSON.parse(JSON.stringify({lat:address.x,lng:address.y}));
+                return result;
+            }
         },
     },
     spot_comment:{
@@ -44,10 +46,10 @@ const spot = dbConfig.define('spot',{
     spot_image_c:{
         type: Sequelize.TEXT,
     },
-    date:{
+    spot_date:{
         type: Sequelize.DATEONLY,
-        defaultValue: Sequelize.NOW,
-    },
-});
+        field:'date',
+    },    
+},);
 
 module.exports = spot; 
