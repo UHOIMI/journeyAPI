@@ -1,6 +1,5 @@
 var dbConfig = require('./dbConfig');
-var Sequelize = require('sequelize');
-var spot = require('../model/spotModel');
+var model = require('../model/model');
 /**
  * フロントエンドに返却するクエリ実行結果
  */
@@ -40,11 +39,11 @@ var DbClient = function() {
     });
 }
 
-//user_idに紐付くレコード取得
-var findAll = function findAll(user_id,callback) {
-    spot.findAll({
+//plan_idに紐付くレコード取得
+var findAll = function findAll(plan_id,callback) {
+    model.spot.findAll({
         where:{
-            user_id: user_id,
+            plan_id: plan_id,
         }
     })
     .then((record) => {
@@ -61,7 +60,7 @@ var findAll = function findAll(user_id,callback) {
   
 //spot_idに紐付くレコードを取得
 var findById = function findById(spot_id, callback) {
-    spot.findAll({
+    model.spot.findAll({
         where:{
             spot_id: spot_id,   
         }
@@ -83,13 +82,13 @@ DbClient.prototype.find = function find(query, callback) {
     if (query.spot_id) {
         findById(query.spot_id, callback);
     } else {
-        findAll(query.user_id,callback);
+        findAll(query.plan_id,callback);
     }
 };
 
 //レコード登録
 DbClient.prototype.register = function register(param, callback) {
-    spot.create(param)
+    model.spot.create(param)
     .then((record) => {
         callback(setResult(200, record, null));
     })
@@ -102,11 +101,11 @@ DbClient.prototype.register = function register(param, callback) {
 DbClient.prototype.update = function update(param, callback) {
     const filter = {
         where:{
-            user_id: param.user_id,
+            plan_id: param.plan_id,
             spot_id: param.spot_id,
         },
     };
-    spot.update(param, filter)
+    model.spot.update(param, filter)
     .then((record) => {
         if (record == "") {
             callback(setResult(404, null, null));
@@ -123,11 +122,11 @@ DbClient.prototype.update = function update(param, callback) {
 DbClient.prototype.remove = function remove(param, callback) {
     const filter = {
         where: {
-            user_id: param.user_id,
+            plan_id: param.plan_id,
             spot_id: param.spot_id
         }
     };
-    spot.destroy(filter)
+    model.spot.destroy(filter)
     .then((record) => {
         if (record == "") {
             callback(setResult(404, null, null));

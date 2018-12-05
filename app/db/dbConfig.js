@@ -1,6 +1,6 @@
 var Sequelize = require('sequelize');
 
-const dbConfig = new Sequelize('jndb', 'postgres', 'Minosannv1', {
+const dbConfig = new Sequelize('exjndb', 'postgres', 'Minosannv1', {
     host: '35.200.26.70',
     dialect: 'postgres',
     pool: {
@@ -15,5 +15,6 @@ const dbConfig = new Sequelize('jndb', 'postgres', 'Minosannv1', {
         freezeTableName: true, //テーブル名をそのままで
     },
 });
+
 
 module.exports = dbConfig;

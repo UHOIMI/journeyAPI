@@ -1,9 +1,7 @@
 var dbConfig = require('./dbConfig');
-var Sequelize = require('sequelize');
-var users = require('../model/usersModel');
+var model = require('../model/model');
 var crypto = require("crypto");
 var jwt = require( 'jsonwebtoken' );
-var session = require( 'express-session' );
 var Auconfig = require('../../Auconfig');
 
 var result = {
@@ -44,11 +42,7 @@ var DbClient = function() {
 }
 //ユーザー一覧
 var findAll = function findAll(callback) {
-    users.findAll({
-        attributes:[
-            'user_id', 'user_name','generation','gender','comment','user_icon','user_header'
-        ],
-    })
+    model.users.findAll()
     .then((record) => {
       if (record == "") {
           callback(setResult(404, null, null));
@@ -63,10 +57,7 @@ var findAll = function findAll(callback) {
 
   //user_idに紐付くレコード取得
 var findById = function findAll(user_id,callback) {
-    users.findAll({
-        attributes:[
-            'user_id', 'user_name','generation','gender','comment','user_icon','user_header'
-        ],
+    model.users.findAll({
         where:{
             user_id: user_id,
         }
@@ -99,7 +90,7 @@ DbClient.prototype.register = function register(param, callback) {
         var hash = sha512.digest('hex')
         param.user_pass=hash;
     }
-    users.create(param)
+    model.users.create(param)
     .then((record) => {
         var user = { user_id: param.user_id, };  //. トークンの素になるオブジェクト
         var token = jwt.sign( user, Auconfig.secret, { expiresIn: '1h' },{ algorithm: 'RS256'} );
@@ -123,7 +114,7 @@ DbClient.prototype.update = function update(param, callback) {
         var hash = sha512.digest('hex')
         param.user_pass=hash;       
     }
-    users.update(param, filter)
+    model.users.update(param, filter)
     .then((record) => {
         callback(setResult(200, record, null));
     })
@@ -140,7 +131,7 @@ DbClient.prototype.login = function login(param,callback){
         var hash = sha512.digest('hex')
         param.user_pass=hash;
     }
-    users.findAll({
+    model.users.findAll({
         attributes:[
             'user_id'
         ],

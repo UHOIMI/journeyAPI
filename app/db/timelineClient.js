@@ -1,7 +1,6 @@
 var dbConfig = require('./dbConfig');
-var Sequelize = require('sequelize');
 var plan = require('../model/planModel');
-
+var model = require('../model/model');
 /**
  * フロントエンドに返却するクエリ実行結果
  */
@@ -65,10 +64,60 @@ var findById = function find(offset,area, callback) {
   
 //areaがない場合
 var findAll = function find(offset,callback) {
-    plan.findAll({
+    model.plan.findAll({
+        //attributes:[],
         offset: offset,
-        limit: 2,
+        limit: 10,
         order: [['date', 'DESC']],
+        include:[
+            {
+                model: model.users,
+                tableName:'users',
+                attributes: ['user_name','user_icon'],
+                paranoid: false, 
+                required: false,
+            },
+            {
+                model: model.spot,
+                associate:[
+                    //model.plan.hasMany(model.spot,{foreignKey:'spot_id', targetKey:'spot_id_a'}),
+                    model.plan.hasMany(model.spot, {foreignKey: 'spot_id', sourceKey: 'spot_id_a'}),
+                    //model.plan.belongsTo(model.spot,{foreignKey:'spot_id_a',targetKey:'spot_id'}),
+                ],
+                freezeTableName:false,
+                tableName:'spot_a',
+                attributes:['spot_image_a','spot_image_b','spot_image_c'],
+                paranoid: false, 
+                required: false,
+                where:{
+                    $or:[
+                        {spot_image_a:{$ne:null}},
+                        {spot_image_b:{$ne:null}},
+                        {spot_image_c:{$ne:null}},
+                    ], 
+                },
+            },
+            {
+                model: model.spot,
+                associate:[
+                    model.plan.hasMany(model.spot, {foreignKey: 'spot_id', sourceKey: 'spot_id_b'}),
+                    //model.plan.hasOne(model.spot,{foreignKey:'spot_id'},{targetKey:'spot_id_b'}),
+                    //model.plan.belongsTo(model.spot,{foreignKey:'spot_id_b'},{targetKey:'spot_id'}),
+                ],
+                freezeTableName:false,
+                tableName:'spot_b',
+                attributes:['spot_image_a','spot_image_b','spot_image_c'],
+                paranoid: false, 
+                required: false,
+                where:{
+                    $or:[
+                        {spot_image_a:{$ne:null}},
+                        {spot_image_b:{$ne:null}},
+                        {spot_image_c:{$ne:null}},
+                    ], 
+                },
+            },
+        ],
     })
     .then((record) => {
         if (record == "") {
@@ -79,6 +128,7 @@ var findAll = function find(offset,callback) {
     })
     .catch((err) => {
         callback(setResult(500, null, err));
+        console.log(err)
     });
 }
 

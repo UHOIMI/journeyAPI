@@ -1,6 +1,5 @@
 var dbConfig = require('./dbConfig');
-var Sequelize = require('sequelize');
-var favorite = require('../model/favoriteModel');
+var model = require('../model/model');
 /**
  * フロントエンドに返却するクエリ実行結果
  */
@@ -42,7 +41,7 @@ var DbClient = function() {
 
 //ユーザーIDに紐づけされたレコード取得
 var findUser = function findAll(user_id,callback) {
-    favorite.findAll({
+    model.favorite.findAll({
         where:{
             user_id: user_id,
         },
@@ -62,7 +61,7 @@ var findUser = function findAll(user_id,callback) {
 
 //プランIDに紐づけされたレコード取得
 var findPlan = function findAll(plan_id,callback) {
-    favorite.findAll({
+    model.favorite.findAll({
         where:{
             plan_id: plan_id,
         },
@@ -82,7 +81,7 @@ var findPlan = function findAll(plan_id,callback) {
 
 //ユーザーIDとプランIDに紐づけされたレコードを取得
 var findById = function findById(user_id,plan_id,callback) {
-    favorite.findAll({
+    model.favorite.findAll({
         where:{
             plan_id: plan_id,
             user_id: user_id,
@@ -113,7 +112,7 @@ DbClient.prototype.find = function find(query, callback) {
 
 //レコード追加
 DbClient.prototype.register = function register(param, callback) {
-    favorite.create(param)
+    model.favorite.create(param)
     .then((record) => {
         callback(setResult(200, record, null));
     })
@@ -130,7 +129,7 @@ DbClient.prototype.remove = function remove(query, callback) {
             user_id: query.user_id,
         }
     };
-    favorite.destroy(filter)
+    model.favorite.destroy(filter)
         .then((record) => {
             callback(setResult(200, record, null));
         })
@@ -141,7 +140,7 @@ DbClient.prototype.remove = function remove(query, callback) {
 
 //プランのお気に入り数をカウント
 var findPlanCount = function findAll(plan_id,callback) {
-    favorite.findAndCountAll({
+    model.favorite.findAndCountAll({
         where:{
             plan_id: plan_id,
         }
@@ -160,7 +159,7 @@ var findPlanCount = function findAll(plan_id,callback) {
 
 //ユーザーのお気に入り数をカウント
 var findUserCount = function findAll(user_id,callback) {
-    favorite.findAndCountAll({
+    model.favorite.findAndCountAll({
         where:{
             user_id: user_id,
         }

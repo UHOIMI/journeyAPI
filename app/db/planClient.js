@@ -1,6 +1,5 @@
 var dbConfig = require('./dbConfig');
-var Sequelize = require('sequelize');
-var plan = require('../model/planModel');
+var model = require('../model/model');
 /**
  * フロントエンドに返却するクエリ実行結果
  */
@@ -42,7 +41,7 @@ var DbClient = function() {
 
 //user_idに紐付くレコード取得
 var findAll = function findAll(user_id,callback) {
-    plan.findAll({
+    model.plan.findAll({
         where:{
             user_id: user_id,
     }
@@ -59,9 +58,9 @@ var findAll = function findAll(user_id,callback) {
     });
 };
   
-//spot_idとuser_id に紐付くレコードを取得
+//plan_idに紐付くレコードを取得
 var findById = function findById(plan_id, callback) {
-    plan.findAll({
+    model.plan.findAll({
         where:{
             plan_id: plan_id,   
         }
@@ -89,7 +88,7 @@ DbClient.prototype.find = function find(query, callback) {
 
 //レコード追加
 DbClient.prototype.register = function register(param, callback) {
-    plan.create(param)
+    model.plan.create(param)
     .then((record) => {
         if (record == "") {
             callback(setResult(404, null, null));
@@ -110,7 +109,7 @@ DbClient.prototype.update = function update(param, callback) {
             plan_id: param.plan_id,
         }
     };
-    plan.update(param, filter)
+    model.plan.update(param, filter)
     .then((record) => {
         if (record == "") {
             callback(setResult(404, null, null));
@@ -131,7 +130,7 @@ DbClient.prototype.remove = function remove(param, callback) {
             plan_id: param.plan_id
         }
     };
-    plan.destroy(filter)
+    model.plan.destroy(filter)
     .then((record) => {
         if (record == "") {
             callback(setResult(404, null, null));
