@@ -101,7 +101,7 @@ DbClient.prototype.register = function register(param, callback) {
 DbClient.prototype.update = function update(param, callback) {
     const filter = {
         where:{
-            plan_id: param.plan_id,
+            user_id: param.user_id,
             spot_id: param.spot_id,
         },
     };
@@ -122,7 +122,7 @@ DbClient.prototype.update = function update(param, callback) {
 DbClient.prototype.remove = function remove(param, callback) {
     const filter = {
         where: {
-            plan_id: param.plan_id,
+            user_id: param.user_id,
             spot_id: param.spot_id
         }
     };

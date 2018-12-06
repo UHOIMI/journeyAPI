@@ -1,5 +1,4 @@
 var dbConfig = require('./dbConfig');
-var plan = require('../model/planModel');
 var model = require('../model/model');
 /**
  * フロントエンドに返却するクエリ実行結果
@@ -42,13 +41,36 @@ var DbClient = function() {
 
 //areaが指定されている場合
 var findById = function find(offset,area, callback) {
-    plan.findAll({
+    model.plan.findAll({
         offset: offset,
         limit: 2,
         where: {
             area: area,
         },
         order: [['date', 'DESC']],
+        include:[
+            {
+                model: model.users,
+                tableName:'users',
+                attributes: ['user_name','user_icon'],
+                paranoid: false, 
+                required: false,
+            },
+            {
+                model: model.spot,
+                tableName:'spot',
+                attributes:['spot_id','spot_image_a','spot_image_b','spot_image_c'],
+                paranoid: false, 
+                required: false,
+                where:{
+                    $or:[
+                        {spot_image_a:{$ne:null}},
+                        {spot_image_b:{$ne:null}},
+                        {spot_image_c:{$ne:null}},
+                    ], 
+                },
+            },
+        ],
     })
     .then((record) => {
         if (record == "") {
@@ -65,7 +87,6 @@ var findById = function find(offset,area, callback) {
 //areaがない場合
 var findAll = function find(offset,callback) {
     model.plan.findAll({
-        //attributes:[],
         offset: offset,
         limit: 10,
         order: [['date', 'DESC']],
@@ -73,40 +94,14 @@ var findAll = function find(offset,callback) {
             {
                 model: model.users,
                 tableName:'users',
-                attributes: ['user_name','user_icon'],
+                attributes: ['user_id','user_name','user_icon'],
                 paranoid: false, 
                 required: false,
             },
             {
                 model: model.spot,
-                associate:[
-                    //model.plan.hasMany(model.spot,{foreignKey:'spot_id', targetKey:'spot_id_a'}),
-                    model.plan.hasMany(model.spot, {foreignKey: 'spot_id', sourceKey: 'spot_id_a'}),
-                    //model.plan.belongsTo(model.spot,{foreignKey:'spot_id_a',targetKey:'spot_id'}),
-                ],
-                freezeTableName:false,
-                tableName:'spot_a',
-                attributes:['spot_image_a','spot_image_b','spot_image_c'],
-                paranoid: false, 
-                required: false,
-                where:{
-                    $or:[
-                        {spot_image_a:{$ne:null}},
-                        {spot_image_b:{$ne:null}},
-                        {spot_image_c:{$ne:null}},
-                    ], 
-                },
-            },
-            {
-                model: model.spot,
-                associate:[
-                    model.plan.hasMany(model.spot, {foreignKey: 'spot_id', sourceKey: 'spot_id_b'}),
-                    //model.plan.hasOne(model.spot,{foreignKey:'spot_id'},{targetKey:'spot_id_b'}),
-                    //model.plan.belongsTo(model.spot,{foreignKey:'spot_id_b'},{targetKey:'spot_id'}),
-                ],
-                freezeTableName:false,
-                tableName:'spot_b',
-                attributes:['spot_image_a','spot_image_b','spot_image_c'],
+                tableName:'spot',
+                attributes:['spot_id','spot_image_a','spot_image_b','spot_image_c'],
                 paranoid: false, 
                 required: false,
                 where:{
