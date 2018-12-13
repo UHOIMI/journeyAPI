@@ -1,7 +1,6 @@
 var dbConfig = require('./dbConfig');
 var Sequelize = require('sequelize');
-var plan = require('../model/planModel');
-var spot = require('../model/spotModel');
+var model = require('../model/model');
 
 /**
  * フロントエンドに返却するクエリ実行結果
@@ -42,55 +41,119 @@ var DbClient = function() {
     });
 }
 
-//4つ
-var findKGAP = function findKGAP(keyword,generation,area,price,callback) {
-    var spotSQL = Sequelize.literal("(SELECT spot_id FROM spot where spot_title LIKE " + " '%" + keyword + "%' or spot_comment LIKE "+"'%"+　keyword　+"%')");
-    var generationSQL = Sequelize.literal("(SELECT user_id FROM users where generation = "+ generation +")");
-    plan.findAll({
-        where:{
-            $or:[
-                {plan_title: { $like: '%'+keyword+'%' }},
-                {plan_comment: { $like: '%'+keyword+'%'}},
-                {spot_id_a: { $in: spotSQL }},
-                {spot_id_b: { $in: spotSQL }},
-                {spot_id_c: { $in: spotSQL }},
-                {spot_id_d: { $in: spotSQL }},
-                {spot_id_e: { $in: spotSQL }},
-                {spot_id_f: { $in: spotSQL }},
-                {spot_id_g: { $in: spotSQL }},
-                {spot_id_h: { $in: spotSQL }},
-                {spot_id_i: { $in: spotSQL }},
-                {spot_id_j: { $in: spotSQL }},
-                {spot_id_k: { $in: spotSQL }},
-                {spot_id_l: { $in: spotSQL }},
-                {spot_id_m: { $in: spotSQL }},
-                {spot_id_n: { $in: spotSQL }},
-                {spot_id_o: { $in: spotSQL }},
-                {spot_id_p: { $in: spotSQL }},
-                {spot_id_q: { $in: spotSQL }},
-                {spot_id_r: { $in: spotSQL }},
-                {spot_id_s: { $in: spotSQL }},
-                {spot_id_t: { $in: spotSQL }},
+//5つ
+var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,callback){
+        model.plan.findAll({
+            order: [['plan_date','DESC']],
+            where:{
+                $and:{
+                    $or:[
+                        {
+                            plan_title:{ $like: '%'+keyword+'%'},
+                            area: area,
+                            price: price,
+                            transportation: transportation,
+                            '$user.generation$': generation,
+                        },
+                        {
+                            plan_comment:{ $like: '%'+keyword+'%'},
+                            area: area,
+                            price: price,
+                            transportation: transportation,
+                            '$user.generation$': generation,
+                        },
+                        {
+                            '$spots.spot_title$':{ $like: '%'+keyword+'%'},
+                            area: area,
+                            price: price,
+                            transportation: transportation,
+                            '$user.generation$': generation,
+                        },
+                        {
+                            '$spots.spot_comment$':{ $like: '%'+keyword+'%'},
+                            area: area,
+                            price: price,
+                            transportation: transportation,
+                            '$user.generation$': generation,
+                        },                        
+                    ],
+                },
+            },
+            include:[
+                {
+                    model: model.users,
+                    attributes: ['user_id','user_name','user_icon'],
+                    paranoid: false,
+                    required: false,
+                },
+                {
+                    model: model.spot,
+                    attributes: ['spot_id','spot_image_a','spot_image_b','spot_image_c'],
+                    paranoid: false,
+                    required: false,
+                },
             ],
-            $and:[
-                {area: area},
-                {price: price},
-                {user_id: {$in: generationSQL}},
-            ]
-        },
-        order: [['date', 'DESC']],
-    })
-    .then((record) => {
-      if (record == "") {
-          callback(setResult(404, null, null));
-      } else {
-          callback(setResult(200, record, null));
-      }
-    })
-    .catch((err) => {
-      callback(setResult(500, null, err));
-    });
+        })    
+        .then((record) => {
+            if (record == "") {
+                callback(setResult(404, null, null));
+            } else {
+                callback(setResult(200, record, null));
+            }
+        })
+        .catch((err) => {
+            callback(setResult(500, null, err));
+        });
 };
+
+// var findKGAP = function findKGAP(keyword,generation,area,price,callback) {
+//     var spotSQL = Sequelize.literal("(SELECT spot_id FROM spot where spot_title LIKE " + " '%" + keyword + "%' or spot_comment LIKE "+"'%"+　keyword　+"%')");
+//     var generationSQL = Sequelize.literal("(SELECT user_id FROM users where generation = "+ generation +")");
+//     plan.findAll({
+//         where:{
+//             $or:[
+//                 {plan_title: { $like: '%'+keyword+'%' }},
+//                 {plan_comment: { $like: '%'+keyword+'%'}},
+//                 {spot_id_a: { $in: spotSQL }},
+//                 {spot_id_b: { $in: spotSQL }},
+//                 {spot_id_c: { $in: spotSQL }},
+//                 {spot_id_d: { $in: spotSQL }},
+//                 {spot_id_e: { $in: spotSQL }},
+//                 {spot_id_f: { $in: spotSQL }},
+//                 {spot_id_g: { $in: spotSQL }},
+//                 {spot_id_h: { $in: spotSQL }},
+//                 {spot_id_i: { $in: spotSQL }},
+//                 {spot_id_j: { $in: spotSQL }},
+//                 {spot_id_k: { $in: spotSQL }},
+//                 {spot_id_l: { $in: spotSQL }},
+//                 {spot_id_m: { $in: spotSQL }},
+//                 {spot_id_n: { $in: spotSQL }},
+//                 {spot_id_o: { $in: spotSQL }},
+//                 {spot_id_p: { $in: spotSQL }},
+//                 {spot_id_q: { $in: spotSQL }},
+//                 {spot_id_r: { $in: spotSQL }},
+//                 {spot_id_s: { $in: spotSQL }},
+//                 {spot_id_t: { $in: spotSQL }},
+//             ],
+//             $and:[
+//                 {area: area},
+//                 {price: price},
+//                 {user_id: {$in: generationSQL}},
+//             ]
+//         },
+//         order: [['date', 'DESC']],
+//     })
+//     .then((record) => {
+//       if (record == "") {
+//           callback(setResult(404, null, null));
+//       } else {
+//           callback(setResult(200, record, null));
+//       }
+//     })
+//     .catch((err) => {
+//       callback(setResult(500, null, err));
+//     });
+// };
 
 //３つ
 var findKGA = function findKGA(keyword, generation, area, callback) {
@@ -585,8 +648,10 @@ DbClient.prototype.find = function find(query, callback) {
     generation = query.generation;
     area = query.area;
     price = query.price;
-    if (keyword && generation && area && price) {
-        findKGAP(keyword, generation, area, price, callback);
+    transportation = query.transportation;
+
+    if (keyword && generation && area && price && transportation) {
+        findKGAPT(keyword, generation, area, price, transportation, callback);
     } else if (keyword && generation && area){
         findKGA(keyword, generation, area, callback);
     } else if (keyword && generation && price){

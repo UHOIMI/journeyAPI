@@ -43,7 +43,7 @@ var DbClient = function() {
 var findById = function find(offset,area, callback) {
     model.plan.findAll({
         offset: offset,
-        limit: 2,
+        limit: 10,
         where: {
             area: area,
         },
@@ -51,24 +51,15 @@ var findById = function find(offset,area, callback) {
         include:[
             {
                 model: model.users,
-                tableName:'users',
                 attributes: ['user_name','user_icon'],
                 paranoid: false, 
                 required: false,
             },
             {
                 model: model.spot,
-                tableName:'spot',
                 attributes:['spot_id','spot_image_a','spot_image_b','spot_image_c'],
                 paranoid: false, 
-                required: false,
-                where:{
-                    $or:[
-                        {spot_image_a:{$ne:null}},
-                        {spot_image_b:{$ne:null}},
-                        {spot_image_c:{$ne:null}},
-                    ], 
-                },
+                required: true,
             },
         ],
     })
@@ -93,24 +84,15 @@ var findAll = function find(offset,callback) {
         include:[
             {
                 model: model.users,
-                tableName:'users',
                 attributes: ['user_id','user_name','user_icon'],
                 paranoid: false, 
                 required: false,
             },
             {
                 model: model.spot,
-                tableName:'spot',
-                attributes:['spot_id','spot_image_a','spot_image_b','spot_image_c'],
+                attributes:['spot_id','spot_title','spot_image_a','spot_image_b','spot_image_c'],
                 paranoid: false, 
                 required: false,
-                where:{
-                    $or:[
-                        {spot_image_a:{$ne:null}},
-                        {spot_image_b:{$ne:null}},
-                        {spot_image_c:{$ne:null}},
-                    ], 
-                },
             },
         ],
     })
