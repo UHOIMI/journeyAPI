@@ -1,7 +1,5 @@
 var dbConfig = require('./dbConfig');
-var Sequelize = require('sequelize');
 var model = require('../model/model');
-
 /**
  * フロントエンドに返却するクエリ実行結果
  */
@@ -41,54 +39,45 @@ var DbClient = function() {
     });
 }
 
-//5つ
-var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,callback){
+
+var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,offset,callback){
         model.plan.findAll({
             order: [['plan_date','DESC']],
+            limit:10,
+            offset:offset,
             where:{
                 $and:{
                     $or:[
                         {
-                            plan_title:{ $like: '%'+keyword+'%'},
+                            plan_title:{ $like: {$any:keyword}},
                             area: area,
                             price: price,
                             transportation: transportation,
-                            '$user.generation$': generation,
                         },
                         {
-                            plan_comment:{ $like: '%'+keyword+'%'},
+                            plan_comment:{ $like: {$any:keyword}},
                             area: area,
                             price: price,
                             transportation: transportation,
-                            '$user.generation$': generation,
-                        },
-                        {
-                            '$spots.spot_title$':{ $like: '%'+keyword+'%'},
-                            area: area,
-                            price: price,
-                            transportation: transportation,
-                            '$user.generation$': generation,
-                        },
-                        {
-                            '$spots.spot_comment$':{ $like: '%'+keyword+'%'},
-                            area: area,
-                            price: price,
-                            transportation: transportation,
-                            '$user.generation$': generation,
-                        },                        
+                        },                       
                     ],
                 },
             },
             include:[
                 {
                     model: model.users,
-                    attributes: ['user_id','user_name','user_icon'],
+                    attributes: ['user_id','user_name','user_icon','generation'],
+                    where:{
+                        generation:generation,
+                    },
                     paranoid: false,
                     required: false,
                 },
                 {
                     model: model.spot,
-                    attributes: ['spot_id','spot_image_a','spot_image_b','spot_image_c'],
+                    attributes: [
+                            'spot_title','spot_id','spot_image_a','spot_image_b','spot_image_c',
+                    ],
                     paranoid: false,
                     required: false,
                 },
@@ -102,20 +91,29 @@ var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,
             }
         })
         .catch((err) => {
+            console.log(err);
             callback(setResult(500, null, err));
         });
 };
 
 //処理分け
 DbClient.prototype.find = function find(query, callback) {
+    var keyword = new Array(); 
     if(query.keyword){
         if(query.keyword != null){
-            keyword = query.keyword;
+            //半角スペースを全角スペースに置き換え
+            query.keyword = query.keyword.replace(' ','　');
+            //置き換えた全角スペースで区切って配列にする
+            array = query.keyword.split('　');
+            //すべての要素を%を囲む
+            for( i=0; i< array.length; i++){
+                keyword.push('%'+ array[i] +'%');
+            }
         }else{
-            keyword='%';
+            keyword.push('%');
         }
     }else{
-        keyword='%';
+        keyword.push('%');
     }
 
     if(query.generation){
@@ -157,8 +155,19 @@ DbClient.prototype.find = function find(query, callback) {
     }else{
         transportation = {$ne:null};
     }
+
+    if(query.offset){
+        if(query.offset != null){
+            offset = query.offset;
+        }else{
+            offset = 0;
+        }
+    }else{
+        offset = 0;
+    }
+
     
-    findKGAPT(keyword, generation, area, price, transportation, callback);
+    findKGAPT(keyword, generation, area, price, transportation,offset, callback);
 };
 
 module.exports = new DbClient();

@@ -57,7 +57,7 @@ var findById = function find(offset,area, callback) {
             },
             {
                 model: model.spot,
-                attributes:['spot_id','spot_image_a','spot_image_b','spot_image_c'],
+                attributes:['spot_id','spot_title','spot_image_a','spot_image_b','spot_image_c'],
                 paranoid: false, 
                 required: true,
             },
