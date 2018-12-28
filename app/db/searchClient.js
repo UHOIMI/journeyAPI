@@ -66,7 +66,7 @@ var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,
             include:[
                 {
                     model: model.users,
-                    attributes: ['user_id','user_name','user_icon','generation'],
+                    attributes: ['user_id','user_name','user_icon'],
                     where:{
                         generation:generation,
                     },
