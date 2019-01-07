@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 
 const dbConfig = new Sequelize('exjndb', 'postgres', 'Minosannv1', {
-    host: '35.200.26.70',
+    host: 'api.mino.asia',
     dialect: 'postgres',
     pool: {
         max: 5,
