@@ -30,7 +30,7 @@ const favorite = dbConfig.define('favorite',{
         defaultValue: Sequelize.NOW,
         field:'date',
         get: function(){
-            date = this.getDataValue('date');
+            date = this.getDataValue('fav_date');
             result= JSON.parse(JSON.stringify(moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss')));
             return result;
         },
