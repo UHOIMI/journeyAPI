@@ -59,6 +59,6 @@ const spot = dbConfig.define('spot',{
         type: Sequelize.DATEONLY,
         field:'date',
     },    
-},);
+});
 
 module.exports = spot; 
