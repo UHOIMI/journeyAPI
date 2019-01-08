@@ -46,6 +46,26 @@ var findUser = function findAll(user_id,callback) {
             user_id: user_id,
         },
         order: [['date', 'DESC']],
+        include:[
+            {
+                model: model.plan,
+                attributes:{exclude:['plan_id']},
+                paranoid: false,
+                required: false,
+            },
+            {
+                model: model.users,
+                attributes: ['user_name','user_icon'],
+                paranoid: false, 
+                required: false,
+            },
+            {
+                model: model.spot,
+                attributes:['spot_id','spot_title','spot_image_a','spot_image_b','spot_image_c'],
+                paranoid: false, 
+                required: false, 
+            }
+        ],
     })
     .then((record) => {
         if (record == "") {
