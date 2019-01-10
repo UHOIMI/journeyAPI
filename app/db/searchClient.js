@@ -45,6 +45,7 @@ var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,
             order: [['plan_date','DESC']],
             limit:10,
             offset:offset,
+            subQuery: false,
             where:{
                 $and:{
                     $or:[
@@ -53,12 +54,14 @@ var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,
                             area: area,
                             price: price,
                             transportation: transportation,
+                            '$user.generation$':generation,
                         },
                         {
                             plan_comment:{ $like: {$any:keyword}},
                             area: area,
                             price: price,
                             transportation: transportation,
+                            '$user.generation$': generation,
                         },                       
                     ],
                 },
@@ -67,9 +70,6 @@ var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,
                 {
                     model: model.users,
                     attributes: ['user_name','user_icon'],
-                    where:{
-                        generation:generation,
-                    },
                     paranoid: false,
                     required: false,
                 },
