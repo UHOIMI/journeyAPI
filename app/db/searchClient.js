@@ -40,10 +40,10 @@ var DbClient = function() {
 }
 
 
-var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,offset,callback){
+var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,offset,limit,callback){
         model.plan.findAll({
             order: [['plan_date','DESC']],
-            limit:10,
+            limit:limit,
             offset:offset,
             subQuery: false,
             where:{
@@ -166,8 +166,17 @@ DbClient.prototype.find = function find(query, callback) {
         offset = 0;
     }
 
-    
-    findKGAPT(keyword, generation, area, price, transportation,offset, callback);
+    if(query.limit){
+        if(query.limit != null){
+            limit = query.limit;
+        }else{
+            limit = 10;
+        }
+    }else{
+        limit = 10;
+    }
+
+    findKGAPT(keyword, generation, area, price, transportation,offset,limit, callback);
 };
 
 module.exports = new DbClient();

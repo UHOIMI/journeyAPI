@@ -40,10 +40,10 @@ var DbClient = function() {
 }
 
 //areaが指定されている場合
-var findById = function find(offset,area, callback) {
+var findById = function find(offset,limit,area, callback) {
     model.plan.findAll({
         offset: offset,
-        limit: 10,
+        limit: limit,
         where: {
             area: area,
         },
@@ -76,15 +76,15 @@ var findById = function find(offset,area, callback) {
 }
   
 //areaがない場合
-var findAll = function find(offset,callback) {
+var findAll = function find(offset,limit,callback) {
     model.plan.findAll({
         offset: offset,
-        limit: 10,
+        limit: limit,
         order: [['date', 'DESC']],
         include:[
             {
                 model: model.users,
-                attributes: ['user_id','user_name','user_icon'],
+                attributes: ['user_name','user_icon'],
                 paranoid: false, 
                 required: false,
             },
@@ -110,10 +110,31 @@ var findAll = function find(offset,callback) {
 }
 
 DbClient.prototype.find = function find(query, callback) {
+
+    if(query.offset){
+        if(query.offset != null){
+            offset = query.offset;
+        }else{
+            offset = 0;
+        }
+    }else{
+        offset = 0;
+    }
+
+    if(query.limit){
+        if(query.limit != null){
+            limit = query.limit;
+        }else{
+            limit = 10;
+        }
+    }else{
+        limit = 10;
+    }
+
     if (query.area) {
-        findById(query.offset,query.area, callback);
+        findById(offset,limit,query.area, callback);
     } else {
-        findAll(query.offset,callback);
+        findAll(offset,limit,callback);
     }
 };
 

@@ -40,8 +40,10 @@ var DbClient = function() {
 }
 
 //ユーザーIDに紐づけされたレコード取得
-var findUser = function findAll(user_id,callback) {
+var findUser = function findAll(user_id,offset,limit,callback) {
     model.favorite.findAll({
+        offset: offset,
+        limit: limit,
         where:{
             user_id: user_id,
         },
@@ -124,7 +126,28 @@ DbClient.prototype.find = function find(query, callback) {
     if (query.user_id && query.plan_id) {
         findById(query.user_id,query.plan_id, callback);
     } else if(query.user_id){
-        findUser(query.user_id,callback);
+
+        if(query.offset){
+            if(query.offset != null){
+                offset = query.offset;
+            }else{
+                offset = 0;
+            }
+        }else{
+            offset = 0;
+        }
+
+        if(query.limit){
+            if(query.limit != null){
+                limit = query.limit;
+            }else{
+                limit = 10;
+            }
+        }else{
+            limit = 10;
+        }
+
+        findUser(query.user_id,offset,limit,callback);
     } else{
         findPlan(query.plan_id,callback);
     }
