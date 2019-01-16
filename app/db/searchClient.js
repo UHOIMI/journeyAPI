@@ -158,7 +158,7 @@ DbClient.prototype.find = function find(query, callback) {
 
     if(query.offset){
         if(query.offset != null){
-            offset = query.offset;
+            offset = Number(query.offset);
         }else{
             offset = 0;
         }
@@ -168,7 +168,7 @@ DbClient.prototype.find = function find(query, callback) {
 
     if(query.limit){
         if(query.limit != null){
-            limit = query.limit;
+            limit = Number(query.limit);
         }else{
             limit = 10;
         }
