@@ -8,7 +8,7 @@ model.favorite = require('./favoriteModel');
 model.users.hasOne(model.plan,{foreignKey: 'user_id'});
 model.plan.belongsTo(model.users,{foreignKey: 'user_id'});
 
-model.plan.hasOne(model.spot,{foreignKey:'plan_id',sourceKey:'plan_id'});
+model.plan.hasMany(model.spot,{foreignKey:'plan_id',sourceKey:'plan_id'});
 model.spot.belongsTo(model.plan,{foreignKey:'plan_id',targetKey:'plan_id'});
 model.spot.hasOne(model.plan,{foreignKey:'plan_id',sourceKey:'plan_id'});
 model.plan.belongsTo(model.spot,{foreignKey:'plan_id',targetKey:'plan_id'});

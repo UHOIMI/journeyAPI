@@ -1,5 +1,6 @@
 var dbConfig = require('./dbConfig');
 var model = require('../model/model');
+var sequelize = require('sequelize');
 /**
  * フロントエンドに返却するクエリ実行結果
  */
@@ -41,11 +42,12 @@ var DbClient = function() {
 
 
 var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,offset,limit,callback){
+    test = sequelize.literal("(SELECT user_id from users where generation "+ generation +")");
         model.plan.findAll({
-            order: [['plan_date','DESC']],
             limit:limit,
             offset:offset,
-            subQuery: false,
+            order: [['plan_date','DESC']],
+            //subQuery: false,
             where:{
                 $and:{
                     $or:[
@@ -54,14 +56,16 @@ var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,
                             area: area,
                             price: price,
                             transportation: transportation,
-                            '$user.generation$':generation,
+                            user_id: {$in: test},
+                            //'$user.generation$': generation,
                         },
                         {
                             plan_comment:{ $like: {$any:keyword}},
                             area: area,
                             price: price,
                             transportation: transportation,
-                            '$user.generation$': generation,
+                            user_id: {$in: test},
+                            //'$user.generation$': generation,
                         },                       
                     ],
                 },
@@ -118,12 +122,12 @@ DbClient.prototype.find = function find(query, callback) {
 
     if(query.generation){
         if(query.generation != null){
-            generation = query.generation;
+            generation = '='+query.generation;
         }else{
-            generation = {$ne:null};
+            generation = 'IS NOT NULL';
         }
     }else{
-        generation = {$ne:null};
+        generation = 'IS NOT NULL';
     }
 
     if(query.area){
