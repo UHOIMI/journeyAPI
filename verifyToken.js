@@ -1,6 +1,7 @@
 var jwt = require('jsonwebtoken');
 var Auconfig = require('./Auconfig');
 function verifyToken(req, res, next) {
+    console.log(req);
   // header か　url parameters か post parametersからトークンを取得する
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 

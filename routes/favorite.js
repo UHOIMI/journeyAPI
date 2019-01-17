@@ -21,8 +21,8 @@ router.post('/register',VerifyToken,function(req, res, next) {
 
 router.delete('/delete',VerifyToken, function(req, res, next) {
     req.body.user_id = req.decoded.user_id
-    const query = req.body;
-    favorite.remove(query, function(result) {
+    const addData = req.body;
+    favorite.remove(addData, function(result) {
         res.json(result);
     });
 });

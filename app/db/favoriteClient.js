@@ -165,17 +165,21 @@ DbClient.prototype.register = function register(param, callback) {
 };
 
 //レコード削除
-DbClient.prototype.remove = function remove(query, callback) {
+DbClient.prototype.remove = function remove(param, callback) {
     const filter = {
         where: {
-            plan_id: query.plan_id,
-            user_id: query.user_id,
+            plan_id: param.plan_id,
+            user_id: param.user_id,
         }
     };
     model.favorite.destroy(filter)
-        .then((record) => {
+    .then((record) => {
+        if (record == "") {
+            callback(setResult(404, null, null));
+        } else {
             callback(setResult(200, record, null));
-        })
+        }
+    })
         .catch((err) => {
             callback(setResult(500, null, err));
         });
