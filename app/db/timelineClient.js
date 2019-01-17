@@ -44,6 +44,7 @@ var findById = function find(offset,limit,area,user_id,callback) {
     model.plan.findAll({
         offset: offset,
         limit: limit,
+        subQuery: false,
         where: {
             area: area,
             user_id: user_id,
@@ -82,6 +83,7 @@ var findAll = function find(offset,limit,user_id,callback) {
         offset: offset,
         limit: limit,
         order: [['date', 'DESC']],
+        subQuery: false,
         where:{
             user_id: user_id,
         },
