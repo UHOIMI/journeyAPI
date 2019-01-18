@@ -17,7 +17,7 @@ model.users.hasMany(model.favorite,{foreignKey:'user_id',sourceKey:'user_id'});
 model.favorite.belongsTo(model.users,{foreignKey:'user_id',targetKey:'user_id'});
 model.plan.hasMany(model.favorite,{foreignKey:'plan_id',sourceKey:'plan_id'});
 model.favorite.belongsTo(model.plan,{foreignKey:'plan_id',sourceKey:'plan_id'});
-model.favorite.hasOne(model.spot,{foreignKey:'plan_id',sourceKey:'plan_id'});
+model.favorite.hasMany(model.spot,{foreignKey:'plan_id',sourceKey:'plan_id'});
 model.spot.belongsTo(model.favorite,{foreignKey:'plan_id',targetKey:'plan_id'});
 
 module.exports = model;
