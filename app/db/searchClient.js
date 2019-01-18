@@ -42,12 +42,11 @@ var DbClient = function() {
 
 
 var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,offset,limit,callback){
-    test = sequelize.literal("(SELECT user_id from users where generation "+ generation +")");
+    generationSQL = sequelize.literal("(SELECT user_id from users where generation "+ generation +")");
         model.plan.findAll({
             limit:limit,
             offset:offset,
             order: [['plan_date','DESC']],
-            //subQuery: false,
             where:{
                 $and:{
                     $or:[
@@ -56,16 +55,14 @@ var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,
                             area: area,
                             price: price,
                             transportation: transportation,
-                            user_id: {$in: test},
-                            //'$user.generation$': generation,
+                            user_id: {$in: generationSQL},
                         },
                         {
                             plan_comment:{ $like: {$any:keyword}},
                             area: area,
                             price: price,
                             transportation: transportation,
-                            user_id: {$in: test},
-                            //'$user.generation$': generation,
+                            user_id: {$in: generationSQL},
                         },                       
                     ],
                 },
