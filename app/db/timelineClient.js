@@ -82,7 +82,7 @@ var findAll = function find(offset,limit,user_id,callback) {
     model.plan.findAll({
         offset: offset,
         limit: limit,
-        order: [['date', 'DESC']],
+        order: [['date', 'DESC'],[model.spot,'spot_id','ASC']],
         where:{
             user_id: user_id,
         },
@@ -118,7 +118,7 @@ DbClient.prototype.find = function find(query, callback) {
 
     if(query.offset){
         if(query.offset != null){
-            offset = query.offset;
+            offset = Number(query.offset);
         }else{
             offset = 0;
         }
@@ -128,7 +128,7 @@ DbClient.prototype.find = function find(query, callback) {
 
     if(query.limit){
         if(query.limit != null){
-            limit = query.limit;
+            limit = Number(query.limit);
         }else{
             limit = 10;
         }

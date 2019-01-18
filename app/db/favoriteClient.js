@@ -47,7 +47,7 @@ var findUser = function findAll(user_id,offset,limit,callback) {
         where:{
             user_id: user_id,
         },
-        order: [['date', 'DESC']],
+        order: [['date', 'DESC'],[model.spot,'spot_id','ASC']],
         include:[
             {
                 model: model.plan,

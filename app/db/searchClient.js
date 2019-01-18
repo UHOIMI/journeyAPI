@@ -46,7 +46,7 @@ var findKGAPT = function findKGAPT(keyword,generation,area,price,transportation,
         model.plan.findAll({
             limit:limit,
             offset:offset,
-            order: [['plan_date','DESC']],
+            order: [['plan_date','DESC'],[model.spot,'spot_id','ASC']],
             where:{
                 $and:{
                     $or:[
