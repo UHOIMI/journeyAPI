@@ -27,8 +27,8 @@ router.put('/update', VerifyToken,function(req, res, next) {
 });
 
 router.delete('/delete',VerifyToken, function(req, res, next) {
-    req.body.user_id = req.decoded.user_id
-    const addData = req.body;
+    req.query.user_id = req.decoded.user_id
+    const addData = req.query;
     spot.remove(addData, function(result) {
         res.json(result);
     });

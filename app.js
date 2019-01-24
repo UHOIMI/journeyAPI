@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 
-
 //route指定
 var spotRouter = require('./routes/spot');
 var planRouter = require('./routes/plan');
