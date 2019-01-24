@@ -117,24 +117,14 @@ DbClient.prototype.update = function update(param, callback) {
         callback(setResult(500, null, err));
     });
 };
- 
-//レコード削除
-DbClient.prototype.remove = function remove(param, callback) {
-    if(param.spot_id){
-        const filter = {
-            where: {
-                user_id: param.user_id,
-                spot_id: param.spot_id
-            }
-        };
-    }else if(param.plan_id){
-        const filter = {
-            where: {
-                user_id: param.user_id,
-                plan_id: param.plan_id
-            }
-        };
-    }
+
+var deleteOnSpot_id = function deleteOnSpot_id(user_id,spot_id, callback) {
+    const filter = {
+        where: {
+            user_id: user_id,
+            spot_id: spot_id
+        }
+    };
     model.spot.destroy(filter)
     .then((record) => {
         if (record == "") {
@@ -146,6 +136,35 @@ DbClient.prototype.remove = function remove(param, callback) {
     .catch((err) => {
         callback(setResult(500, null, err));
     });
+};
+
+var deleteOnPlan_id = function deleteOnPlan_id(user_id,plan_id, callback) {
+    const filter = {
+        where: {
+            user_id: user_id,
+            plan_id: plan_id
+        }
+    };
+    model.spot.destroy(filter)
+    .then((record) => {
+        if (record == "") {
+            callback(setResult(404, null, null));
+        } else {
+            callback(setResult(200, record, null));
+        }
+    })
+    .catch((err) => {
+        callback(setResult(500, null, err));
+    });
+};
+ 
+//レコード削除
+DbClient.prototype.remove = function remove(param, callback) {
+    if(param.spot_id){
+        deleteOnSpot_id(param.user_id,param.spot_id,callback);
+    }else if(param.plan_id){
+        deleteOnPlan_id(param.user_id,param.plan_id,callback);
+    }
 };
   
 module.exports = new DbClient();
