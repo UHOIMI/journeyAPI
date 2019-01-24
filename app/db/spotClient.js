@@ -120,12 +120,21 @@ DbClient.prototype.update = function update(param, callback) {
  
 //レコード削除
 DbClient.prototype.remove = function remove(param, callback) {
-    const filter = {
-        where: {
-            user_id: param.user_id,
-            spot_id: param.spot_id
-        }
-    };
+    if(param.spot_id){
+        const filter = {
+            where: {
+                user_id: param.user_id,
+                spot_id: param.spot_id
+            }
+        };
+    }else if(param.plan_id){
+        const filter = {
+            where: {
+                user_id: param.user_id,
+                plan_id: param.plan_id
+            }
+        };
+    }
     model.spot.destroy(filter)
     .then((record) => {
         if (record == "") {
