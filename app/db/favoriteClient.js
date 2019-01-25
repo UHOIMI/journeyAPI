@@ -1,5 +1,6 @@
 var dbConfig = require('./dbConfig');
 var model = require('../model/model');
+var sequelize = require('sequelize');
 /**
  * フロントエンドに返却するクエリ実行結果
  */
@@ -41,6 +42,7 @@ var DbClient = function() {
 
 //ユーザーIDに紐づけされたレコード取得
 var findUser = function findAll(user_id,offset,limit,callback) {
+    userSQL = sequelize.literal("(SELECT user_id from users where users.user_id = plan.user_id)");
     model.favorite.findAll({
         offset: offset,
         limit: limit,
@@ -53,12 +55,6 @@ var findUser = function findAll(user_id,offset,limit,callback) {
                 model: model.plan,
                 attributes:{exclude:['plan_id']},
                 paranoid: false,
-                required: false,
-            },
-            {
-                model: model.users,
-                attributes: ['user_name','user_icon'],
-                paranoid: false, 
                 required: false,
             },
             {
